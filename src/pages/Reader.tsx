@@ -36,12 +36,16 @@ export default function Reader() {
 
     function toggleTheme() {
         const root = document.documentElement;
-        const dark =
-            root.style.colorScheme === "dark" ||
-            getComputedStyle(root).colorScheme === "dark";
-        root.style.colorScheme = dark ? "light" : "dark";
-        document.body.classList.toggle("bg-white", !dark);
-        document.body.classList.toggle("text-brand-900", !dark);
+        const isDark = root.classList.contains("dark");
+        const nextIsDark = !isDark;
+
+        root.classList.toggle("dark", nextIsDark);
+        root.style.colorScheme = nextIsDark ? "dark" : "light";
+
+        document.body.classList.toggle("bg-brand-900", nextIsDark);
+        document.body.classList.toggle("text-white", nextIsDark);
+        document.body.classList.toggle("bg-white", !nextIsDark);
+        document.body.classList.toggle("text-brand-900", !nextIsDark);
     }
 
     async function onShare() {
@@ -80,7 +84,7 @@ export default function Reader() {
             </div>
 
             {/* Title + deck */}
-            <header className="mb-4 gap-4 flex flex-col">
+            <header className="mb-4 gap-4 flex flex-col text-slate-800 dark:text-slate-200">
                 <h1 className="text-3xl/tight font-serif font-semibold tracking-tight">
                     {article.title || article.url}
                 </h1>
@@ -143,7 +147,7 @@ export default function Reader() {
             )}
 
             {/* Content */}
-            <div className="prose prose-invert max-w-none prose-headings:scroll-mt-24">
+            <div className="prose dark:prose-invert max-w-none prose-headings:scroll-mt-24">
                 <div
                     dangerouslySetInnerHTML={{ __html: article.content || "" }}
                 />
