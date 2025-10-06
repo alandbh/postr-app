@@ -7,7 +7,7 @@ import TagChip from "@/components/TagChip";
 export default function Reader() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const [article, setArticle] = useState<Article | null>(null);
+    const [article, setArticle] = useState<Article | null | undefined>(null);
 
     useEffect(() => {
         if (!id) return;
@@ -49,6 +49,7 @@ export default function Reader() {
     }
 
     async function onShare() {
+        if (!article) return;
         if (navigator.share) {
             await navigator.share({ title: article.title, url: article.url });
         } else {
