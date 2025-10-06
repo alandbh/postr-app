@@ -46,7 +46,7 @@ export default function Home() {
       <div className="text-sm text-white/60">
         <a href="/articles" className="underline">Meus artigos</a> · <a href="/account" className="underline">Minha conta</a>
       </div>
-      <pre>v1.0.2</pre>
+      <pre>v1.0.3</pre>
     </div>
   )
 }
