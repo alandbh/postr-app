@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postr - Processando compartilhamento</title>
+    <script>
+        // Redireciona para o React Router com os parâmetros
+        const urlParams = new URLSearchParams(window.location.search);
+        const url = urlParams.get('url');
+        
+        if (url) {
+            // Redireciona para o React Router
+            window.location.href = `/?share-target=true&url=${encodeURIComponent(url)}`;
+        } else {
+            // Se não há URL, vai para a home
+            window.location.href = '/';
+        }
+    </script>
+</head>
+<body>
+    <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+        <h2>Processando compartilhamento...</h2>
+        <p>Redirecionando para o Postr...</p>
+    </div>
+</body>
+</html>
