@@ -8,6 +8,7 @@ import Reader from './pages/Reader'
 import Articles from './pages/Articles'
 import Account from './pages/Account'
 import ShareTarget from './pages/ShareTarget'
+import { registerSW } from 'virtual:pwa-register'
 
 const router = createBrowserRouter([
   { path: '/', element: <App />, children: [
@@ -27,3 +28,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
 import { setupMockServer } from './mock-server'
 if (import.meta.env.DEV) setupMockServer()
+
+if ('serviceWorker' in navigator) {
+  registerSW({ immediate: true })
+}

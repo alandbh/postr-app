@@ -13,7 +13,13 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      strategies: 'injectManifest',
+      srcDir: 'src',
+      filename: 'sw.ts',
       includeAssets: ['favicon.svg', 'robots.txt', 'apple-touch-icon.png'],
+      injectManifest: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}']
+      },
       manifest: {
         name: 'Postr — MLSD Reader',
         short_name: 'Postr',
@@ -38,19 +44,6 @@ export default defineConfig({
             url: 'url'
           }
         }
-      },
-      workbox: {
-        navigateFallback: '/index.html',
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-        runtimeCaching: [
-          {
-            urlPattern: ({url}) => url.origin === self.location.origin,
-            handler: 'StaleWhileRevalidate',
-            options: {
-              cacheName: 'static-resources'
-            }
-          }
-        ]
       }
     })
   ]
