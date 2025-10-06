@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Share Target</title>
+</head>
+<body>
+    <h1>Teste do Share Target</h1>
+    <p>Teste com diferentes formatos de dados compartilhados:</p>
+    
+    <div style="margin: 20px 0;">
+        <h3>Teste 1: URL simples</h3>
+        <a href="http://localhost:3001/share-target?url=https://example.com&title=Teste%20Simples" target="_blank">
+            Testar URL simples
+        </a>
+    </div>
+    
+    <div style="margin: 20px 0;">
+        <h3>Teste 2: URL com texto extra (como o seu caso)</h3>
+        <p><small>O Share Target agora ignora title e text, focando apenas na URL</small></p>
+        <a href="http://localhost:3001/share-target?url=https://search.app/3AfHi&title=Fonte:%20Estadão&text=https://search.app/3AfHi" target="_blank">
+            Testar URL com texto extra
+        </a>
+    </div>
+    
+    <div style="margin: 20px 0;">
+        <h3>Teste 3: URL inválida</h3>
+        <a href="http://localhost:3001/share-target?url=url-invalida&title=Teste%20Inválido" target="_blank">
+            Testar URL inválida
+        </a>
+    </div>
+    
+    <div style="margin: 20px 0;">
+        <h3>Teste 4: Sem URL</h3>
+        <a href="http://localhost:3001/share-target?title=Sem%20URL" target="_blank">
+            Testar sem URL
+        </a>
+    </div>
+</body>
+</html>
