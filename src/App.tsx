@@ -1,5 +1,6 @@
 import React from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
+import UpdateNotification from "./components/UpdateNotification";
 
 export default function App() {
     const { pathname } = useLocation();
@@ -37,6 +38,7 @@ export default function App() {
             <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-6">
                 <Outlet />
             </main>
+            <UpdateNotification />
         </div>
     );
 }
