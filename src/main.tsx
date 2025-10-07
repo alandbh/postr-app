@@ -16,7 +16,9 @@ const router = createBrowserRouter([
     { path: 'account', element: <Account /> },
     { path: 'share-target', element: <ShareTarget /> }
   ]}
-])
+], {
+  basename: '/postr'
+})
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
