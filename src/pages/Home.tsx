@@ -4,6 +4,20 @@ import Button from '@/components/Button'
 import { db } from '@/db/schema'
 import { parseArticleFromUrl } from '@/lib/parser'
 
+// Função para extrair URL de texto compartilhado
+function extractUrlFromText(text: string): string | null {
+  // Regex para encontrar URLs (http/https)
+  const urlRegex = /(https?:\/\/[^\s]+)/g
+  const matches = text.match(urlRegex)
+  
+  if (matches && matches.length > 0) {
+    // Retorna a primeira URL encontrada
+    return matches[0]
+  }
+  
+  return null
+}
+
 export default function Home() {
   const [url, setUrl] = useState('')
   const [loading, setLoading] = useState(false)
@@ -12,11 +26,28 @@ export default function Home() {
     if (!url) return
     setLoading(true)
     try {
+      // Extrair URL do texto colado
+      let cleanUrl = url.trim()
+      
+      // Se não começa com http, tentar extrair URL do texto
+      if (!cleanUrl.startsWith('http')) {
+        const extractedUrl = extractUrlFromText(cleanUrl)
+        if (extractedUrl) {
+          cleanUrl = extractedUrl
+          // Atualizar o campo com a URL limpa
+          setUrl(cleanUrl)
+        } else {
+          setLoading(false)
+          alert('Nenhuma URL válida encontrada no texto colado')
+          return
+        }
+      }
+      
       const id = crypto.randomUUID()
-      const parsed = await parseArticleFromUrl(url)
+      const parsed = await parseArticleFromUrl(cleanUrl)
       await db.articles.add({
         id,
-        url,
+        url: cleanUrl,
         title: parsed.title,
         content: parsed.content,
         excerpt: parsed.excerpt,
@@ -25,7 +56,7 @@ export default function Home() {
         tags: [],
         savedAt: Date.now()
       })
-      window.location.href = `/reader/${id}`
+      window.location.href = `/postr/reader/${id}`
     } finally {
       setLoading(false)
     }
@@ -46,7 +77,10 @@ export default function Home() {
       <div className="text-sm text-white/60">
         <a href="/articles" className="underline">Meus artigos</a> · <a href="/account" className="underline">Minha conta</a>
       </div>
-      <pre>v1.0.3</pre>
+      <pre>
+        v1.0.8
+        Logs na tela v3
+      </pre>
     </div>
   )
 }

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Share Target - Postr</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .test-link { display: block; margin: 10px 0; padding: 15px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; text-align: center; }
+        .test-link:hover { background: #0056b3; }
+        .info { background: #e9ecef; padding: 15px; border-radius: 4px; margin: 20px 0; }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .warning { background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; }
+        .code { background: #f8f9fa; padding: 10px; border-radius: 4px; font-family: monospace; margin: 10px 0; }
+        .step { margin: 20px 0; padding: 15px; border-left: 4px solid #007bff; background: #f8f9fa; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Teste do Share Target - Postr</h1>
+        
+        <div class="info success">
+            <h3>✅ Progresso Identificado:</h3>
+            <p>O Share Target está funcionando! O problema é que o <strong>cPanel não processa POST requests</strong> do Share Target API, mas o fallback está funcionando.</p>
+        </div>
+
+        <div class="info warning">
+            <h3>⚠️ Problema Atual:</h3>
+            <p>Quando não há parâmetros, o sistema tenta processar a própria URL do Share Target, que não é uma notícia válida.</p>
+        </div>
+
+        <h2>🔧 Testes Funcionais:</h2>
+
+        <div class="step">
+            <h3>1. Teste com URL de notícia real:</h3>
+            <a href="https://alanvasconcelos.net/postr/share-target?url=https://g1.globo.com/tecnologia/noticia/2024/01/15/novidades-tecnologia.ghtml" target="_blank" class="test-link">
+                📰 Teste com notícia do G1
+            </a>
+        </div>
+
+        <div class="step">
+            <h3>2. Teste com URL no parâmetro text:</h3>
+            <a href="https://alanvasconcelos.net/postr/share-target?text=Fonte:%20G1%20https://g1.globo.com/tecnologia/noticia/2024/01/15/novidades-tecnologia.ghtml" target="_blank" class="test-link">
+                📝 Teste com texto misturado
+            </a>
+        </div>
+
+        <div class="step">
+            <h3>3. Teste com URL no parâmetro title:</h3>
+            <a href="https://alanvasconcelos.net/postr/share-target?title=https://g1.globo.com/tecnologia/noticia/2024/01/15/novidades-tecnologia.ghtml" target="_blank" class="test-link">
+                🏷️ Teste com URL no título
+            </a>
+        </div>
+
+        <div class="info">
+            <h3>💡 Como usar no Android (Solução Atual):</h3>
+            <p>Como o Share Target API não funciona no cPanel, use a <strong>página inicial</strong>:</p>
+            <ol>
+                <li>Abra o <strong>Postr</strong> no navegador</li>
+                <li>Vá para a <strong>página inicial</strong></li>
+                <li><strong>Cole a URL</strong> da notícia no campo de texto</li>
+                <li>Clique em <strong>"Salvar"</strong></li>
+            </ol>
+        </div>
+
+        <div class="info">
+            <h3>🔧 Soluções para o Share Target API:</h3>
+            <ul>
+                <li><strong>Migrar para Vercel/Netlify:</strong> Suportam Share Target API nativamente</li>
+                <li><strong>Configurar cPanel:</strong> Adicionar regras para processar POST requests</li>
+                <li><strong>Usar proxy:</strong> Criar um serviço intermediário para interceptar POST</li>
+            </ul>
+        </div>
+
+        <div class="code">
+            <strong>URL de teste direta:</strong><br>
+            https://alanvasconcelos.net/postr/share-target?url=SUA_URL_AQUI
+        </div>
+
+        <div class="step">
+            <h3>🎯 Teste Rápido:</h3>
+            <p>Cole uma URL de notícia aqui para testar:</p>
+            <input type="text" id="testUrl" placeholder="https://exemplo.com/noticia" style="width: 100%; padding: 10px; margin: 10px 0;">
+            <button onclick="testUrl()" style="background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+                Testar URL
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function testUrl() {
+            const url = document.getElementById('testUrl').value;
+            if (url) {
+                const testLink = `https://alanvasconcelos.net/postr/share-target?url=${encodeURIComponent(url)}`;
+                window.open(testLink, '_blank');
+            } else {
+                alert('Por favor, cole uma URL válida');
+            }
+        }
+    </script>
+</body>
+</html>

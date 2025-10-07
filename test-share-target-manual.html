@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Manual Share Target</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .test-link { display: block; margin: 10px 0; padding: 10px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; }
+        .test-link:hover { background: #0056b3; }
+        .info { background: #e9ecef; padding: 15px; border-radius: 4px; margin: 20px 0; }
+        .code { background: #f8f9fa; padding: 10px; border-radius: 4px; font-family: monospace; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Teste Manual do Share Target</h1>
+        
+        <div class="info">
+            <h3>📋 Problema Identificado:</h3>
+            <p>O cPanel não está processando POST requests do Share Target API corretamente. Todos os parâmetros chegam como <code>null</code>.</p>
+        </div>
+
+        <h2>🔧 Soluções de Teste:</h2>
+
+        <h3>1. Teste com URL direta (GET):</h3>
+        <a href="https://alanvasconcelos.net/postr/share-target?url=https://example.com" target="_blank" class="test-link">
+            Teste 1: URL simples
+        </a>
+        
+        <a href="https://alanvasconcelos.net/postr/share-target?url=Fonte:%20Auto+%20TV%20https://search.app/M4Ydj" target="_blank" class="test-link">
+            Teste 2: URL com texto misturado
+        </a>
+
+        <h3>2. Teste com parâmetros múltiplos:</h3>
+        <a href="https://alanvasconcelos.net/postr/share-target?url=https://example.com&title=Título%20da%20Notícia&text=Descrição%20da%20notícia" target="_blank" class="test-link">
+            Teste 3: Múltiplos parâmetros
+        </a>
+
+        <h3>3. Teste com URL no parâmetro text:</h3>
+        <a href="https://alanvasconcelos.net/postr/share-target?text=https://example.com&title=Título" target="_blank" class="test-link">
+            Teste 4: URL no parâmetro text
+        </a>
+
+        <h3>4. Teste com URL no parâmetro title:</h3>
+        <a href="https://alanvasconcelos.net/postr/share-target?title=https://example.com" target="_blank" class="test-link">
+            Teste 5: URL no parâmetro title
+        </a>
+
+        <div class="info">
+            <h3>💡 Como usar no Android:</h3>
+            <p>Como o Share Target API não está funcionando no cPanel, você pode:</p>
+            <ol>
+                <li><strong>Copiar a URL</strong> da notícia</li>
+                <li><strong>Abrir o Postr</strong> no navegador</li>
+                <li><strong>Colar a URL</strong> no campo de texto</li>
+                <li><strong>Clicar em "Salvar"</strong></li>
+            </ol>
+        </div>
+
+        <div class="info">
+            <h3>🔧 Solução Definitiva:</h3>
+            <p>Para o Share Target funcionar corretamente, seria necessário:</p>
+            <ul>
+                <li>Configurar o cPanel para processar POST requests</li>
+                <li>Ou migrar para um provedor que suporte Share Target API (Vercel, Netlify, etc.)</li>
+                <li>Ou usar um serviço de proxy para interceptar os POST requests</li>
+            </ul>
+        </div>
+
+        <div class="code">
+            <strong>URL de teste direta:</strong><br>
+            https://alanvasconcelos.net/postr/share-target?url=SUA_URL_AQUI
+        </div>
+    </div>
+</body>
+</html>
