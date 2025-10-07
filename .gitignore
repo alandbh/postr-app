@@ -1,5 +1,6 @@
 node_modules
 dist
+src/old-pwa
 .env
 .DS_Store
 .vscode
