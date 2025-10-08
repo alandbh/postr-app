@@ -2,12 +2,10 @@
   RewriteEngine On
   RewriteBase /postr/
   
-  # Não reescrever arquivos existentes
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  
-  # Redirecionar tudo para index.html
-  RewriteRule ^ index.html [L]
+  # Redirecionar tudo para dist-cpanel, exceto hook.php
+  RewriteCond %{REQUEST_URI} !^/postr/hook\.php$
+  RewriteCond %{REQUEST_URI} !^/postr/dist-cpanel/
+  RewriteRule ^(.*)$ dist-cpanel/$1 [L]
 </IfModule>
 
 # Cache control para service worker
