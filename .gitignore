@@ -6,3 +6,4 @@ src/old-pwa
 .DS_Store
 .vscode
 /*.zip
+hook.php
