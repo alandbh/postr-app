@@ -78,7 +78,7 @@ export default function Home() {
         <a href="/articles" className="underline">Meus artigos</a> · <a href="/account" className="underline">Minha conta</a>
       </div>
       <pre>
-        v1.0.8
+        v1.0.9
         Logs na tela v3
       </pre>
     </div>
