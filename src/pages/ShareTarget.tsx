@@ -181,7 +181,7 @@ export default function ShareTarget() {
 
         {/* Debug Info */}
         {debugInfo.length > 0 && (
-          <div className="bg-gray-800 p-4 rounded-lg mb-4">
+          <div className="bg-gray-800 p-4 rounded-lg mb-4 hidden">
             <h2 className="text-lg font-semibold mb-2">Debug Info:</h2>
             <div className="space-y-1 text-sm">
               {debugInfo.map((info, index) => (
