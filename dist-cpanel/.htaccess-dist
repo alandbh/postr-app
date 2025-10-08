@@ -1,0 +1,30 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /postr/
+  
+  # Não reescrever arquivos existentes
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  
+  # Redirecionar tudo para index.html (SPA)
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# Cache control para service worker
+<FilesMatch "sw.*\.js$">
+  Header set Cache-Control "public, max-age=0, must-revalidate"
+</FilesMatch>
+
+<FilesMatch "workbox-.*\.js$">
+  Header set Cache-Control "public, max-age=0, must-revalidate"
+</FilesMatch>
+
+# Content-Type para manifest
+<FilesMatch "manifest\.webmanifest$">
+  Header set Content-Type "application/manifest+json"
+</FilesMatch>
+
+# Comprimir arquivos
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json application/manifest+json
+</IfModule>
