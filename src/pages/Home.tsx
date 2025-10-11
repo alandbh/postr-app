@@ -56,7 +56,7 @@ export default function Home() {
         tags: [],
         savedAt: Date.now()
       })
-      window.location.href = `/postr/reader/${id}`
+      window.location.href = `/reader/${id}`
     } finally {
       setLoading(false)
     }
