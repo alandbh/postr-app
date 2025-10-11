@@ -102,14 +102,14 @@ export default function ShareTarget() {
           const fallbackUrl = extractUrlFromText(currentUrl)
           
           // Verificar se a URL extraída não é a própria URL do share-target
-          if (fallbackUrl && !fallbackUrl.includes('/postr/share-target')) {
+          if (fallbackUrl && !fallbackUrl.includes('/share-target')) {
             setDebugInfo(prev => [...prev, `URL extraída da URL da página: "${fallbackUrl}"`])
             extractedUrl = fallbackUrl
             sourceParam = 'url_da_pagina'
           } else {
             setError('Nenhuma URL válida encontrada nos parâmetros compartilhados')
             setDebugInfo(prev => [...prev, 'ERRO: Nenhuma URL encontrada em nenhum parâmetro'])
-            setDebugInfo(prev => [...prev, 'DICA: Para testar manualmente, use: https://alanvasconcelos.net/postr/share-target?url=SUA_URL_AQUI'])
+            setDebugInfo(prev => [...prev, 'DICA: Para testar manualmente, use: https://postr.alanvasconcelos.net/share-target?url=SUA_URL_AQUI'])
             setDebugInfo(prev => [...prev, 'DICA: Ou simplesmente use a página inicial do Postr para colar a URL'])
             return
           }
@@ -146,8 +146,8 @@ export default function ShareTarget() {
           
           setDebugInfo(prev => [...prev, 'Artigo salvo com sucesso!'])
           setStatus('Redirecionando...')
-          setDebugInfo(prev => [...prev, `Redirecionando para: /postr/reader/${id}`])
-          window.location.href = `/postr/reader/${id}`
+          setDebugInfo(prev => [...prev, `Redirecionando para: /reader/${id}`])
+          window.location.href = `/reader/${id}`
           return
         } catch (parseError) {
           setDebugInfo(prev => [...prev, `ERRO no parsing: ${parseError}`])
@@ -199,7 +199,7 @@ export default function ShareTarget() {
             <h2 className="text-lg font-semibold mb-2 text-red-400">Erro:</h2>
             <p className="text-gray-300">{error}</p>
             <button 
-              onClick={() => location.replace('/postr/')}
+              onClick={() => location.replace('/')}
               className="mt-3 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
             >
               Voltar ao início

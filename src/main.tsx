@@ -17,7 +17,7 @@ const router = createBrowserRouter([
     { path: 'share-target', element: <ShareTarget /> }
   ]}
 ], {
-  basename: '/postr'
+  basename: '/'
 })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

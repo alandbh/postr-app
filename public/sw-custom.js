@@ -5,8 +5,8 @@ import { precacheAndRoute } from 'workbox-precaching';
 precacheAndRoute(self.__WB_MANIFEST);
 
 self.addEventListener('fetch', (event) => {
-    // Interceptar POST requests para /postr/share-target
-    if (event.request.method === 'POST' && event.request.url.includes('/postr/share-target')) {
+    // Interceptar POST requests para /share-target
+    if (event.request.method === 'POST' && event.request.url.includes('/share-target')) {
         event.respondWith(handleShareTarget(event.request));
     }
 });
@@ -27,13 +27,13 @@ async function handleShareTarget(request) {
         if (text) params.set('text', text);
         if (url) params.set('url', url);
 
-        const redirectUrl = `/postr/share-target?${params.toString()}`;
+        const redirectUrl = `/share-target?${params.toString()}`;
         
         // Redirecionar para a página com os parâmetros
         return Response.redirect(redirectUrl, 303);
     } catch (error) {
         console.error('Erro ao processar Share Target:', error);
         // Em caso de erro, redirecionar para a página inicial
-        return Response.redirect('/postr/', 303);
+        return Response.redirect('/', 303);
     }
 }

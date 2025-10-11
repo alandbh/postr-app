@@ -4,7 +4,7 @@ import { VitePWA } from "vite-plugin-pwa";
 import { fileURLToPath, URL } from "node:url";
 
 export default defineConfig({
-    base: "/postr/",
+    base: "/",
     resolve: {
         alias: {
             "@": fileURLToPath(new URL("./src", import.meta.url)),
@@ -19,8 +19,8 @@ export default defineConfig({
                    filename: "sw-custom.js",
             workbox: {
                 globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
-                navigateFallback: '/postr/index.html',
-                navigateFallbackDenylist: [/^\/postr\/share-target$/],
+                navigateFallback: '/index.html',
+                navigateFallbackDenylist: [/^\/share-target$/],
                 runtimeCaching: [
                     {
                         urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -41,34 +41,34 @@ export default defineConfig({
             manifest: {
                 name: "Postr — Distraction-free Reader",
                 short_name: "Postr",
-                id: "/postr/?id=78q",
+                id: "/?id=78q",
                 description:
                     "Salve links e leia artigos no Modo Leitura Sem Distrações (MLSD).",
                 theme_color: "#0B1220",
                 background_color: "#0B1220",
                 display: "standalone",
-                start_url: "/postr/",
-                scope: "/postr/",
+                start_url: "/",
+                scope: "/",
                 icons: [
                     {
-                        src: "/postr/pwa-192.png",
+                        src: "/pwa-192.png",
                         sizes: "192x192",
                         type: "image/png",
                     },
                     {
-                        src: "/postr/pwa-512.png",
+                        src: "/pwa-512.png",
                         sizes: "512x512",
                         type: "image/png",
                     },
                     {
-                        src: "/postr/maskable-512.png",
+                        src: "/maskable-512.png",
                         sizes: "512x512",
                         type: "image/png",
                         purpose: "maskable",
                     },
                 ],
                        share_target: {
-                           action: "/postr/share-target",
+                           action: "/share-target",
                            method: "POST",
                            enctype: "multipart/form-data",
                            params: {

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:cpanel": "vite build --outDir dist-cpanel --base /postr/ && cp public/.htaccess-dist dist-cpanel/.htaccess",
+    "build:cpanel": "vite build --outDir dist-cpanel && cp public/.htaccess-dist dist-cpanel/.htaccess",
     "build:cpanel-zip": "vite build && cp public/.htaccess dist/.htaccess && zip -r postr-cpanel.zip dist/",
     "preview": "vite preview"
   },
