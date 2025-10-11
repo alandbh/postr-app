@@ -1,10 +1,10 @@
 name: Deploy to cPanel
 
-# Gatilho: Executa toda vez que houver um push na branch 'master'
+# Gatilho: Executa toda vez que houver um push na branch 'main'
 on:
   push:
     branches:
-      - master # ou 'main', se sua branch principal for essa
+      - main # Alterado de 'master' para 'main'
 
 jobs:
   deploy:
