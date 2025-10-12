@@ -148,7 +148,7 @@ export default function Reader() {
             )}
 
             {/* Content */}
-            <div className="prose dark:prose-invert max-w-none prose-headings:scroll-mt-24">
+            <div className="prose-invert dark:prose max-w-none prose-headings:scroll-mt-24">
                 <div
                     dangerouslySetInnerHTML={{ __html: article.content || "" }}
                 />
