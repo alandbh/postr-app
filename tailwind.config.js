@@ -7,6 +7,7 @@ export default {
                 surface: "#FEF7FF",
                 "on-surface": "#49454F",
                 primary: "#6750A4",
+                "primary-dark": "#1D1B20",
                 "primary-fixed": "#D0BCFF",
                 // Contrast text for primary surfaces
                 "on-primary-contrast": "#FFFFFF",
@@ -16,65 +17,70 @@ export default {
                 serif: ["Georgia", "ui-serif", "serif"],
             },
             fontSize: {
+                // UI Typography
                 headline: ["20px", { lineHeight: "24px" }],
                 "title-md": ["16px", { lineHeight: "24px" }],
                 "body-lg": ["16px", { lineHeight: "24px" }],
+
+                // Article Typography
+                "article-h1": ["28px", { lineHeight: "36px" }],
+                "article-p": ["20px", { lineHeight: "28px" }],
+                "article-excerpt": ["20px", { lineHeight: "28px" }],
             },
             typography: (theme) => ({
                 DEFAULT: {
                     css: {
+                        color: theme("colors.on-surface"),
                         fontFamily: theme("fontFamily.serif").join(","),
+                        // --- Base Article Typography ---
                         p: {
-                            marginTop: "1em",
-                            marginBottom: "1em",
-                            lineHeight: "1.7",
+                            fontSize: theme("fontSize.article-p")[0],
+                            lineHeight: theme("fontSize.article-p")[1].lineHeight,
+                            marginTop: "1.25em",
+                            marginBottom: "1.25em",
+                        },
+                        h1: {
+                            fontFamily: theme("fontFamily.serif").join(","),
+                            fontSize: theme("fontSize.article-h1")[0],
+                            lineHeight: theme("fontSize.article-h1")[1].lineHeight,
+                            fontWeight: "700",
+                        },
+                        // --- Links ---
+                        a: {
+                            color: theme("colors.primary"),
+                            "&:hover": {
+                                color: theme("colors.primary-dark"),
+                            },
                         },
                     },
                 },
                 invert: {
                     css: {
-                        fontFamily: theme("fontFamily.serif").join(","),
-                        // Cores base
-                        "--tw-prose-body": theme("colors.white / 0.9"),
-                        "--tw-prose-headings": theme("colors.white"),
-                        "--tw-prose-hr": theme("colors.white / 0.1"),
-                        "--tw-prose-bold": theme("colors.white"),
-                        "--tw-prose-counters": theme("colors.white / 0.7"),
-                        "--tw-prose-bullets": theme("colors.white / 0.7"),
-                        "--tw-prose-quotes": theme("colors.white"),
-                        "--tw-prose-quote-borders": theme("colors.primary"),
-                        "--tw-prose-captions": theme("colors.white / 0.7"),
-                        "--tw-prose-code": theme("colors.white"),
-                        "--tw-prose-pre-code": theme("colors.white"),
-                        "--tw-prose-pre-bg": theme("colors.primary"),
-                        "--tw-prose-th-borders": theme("colors.white / 0.2"),
-                        "--tw-prose-td-borders": theme("colors.white / 0.1"),
-
-                        /* LINKS — clareia e melhora acessibilidade */
+                        // --- Base ---
+                        color: theme("colors.white / 0.9"),
+                        '--tw-prose-body': theme('colors.gray.300'),
+                        '--tw-prose-headings': theme('colors.white'),
+                        '--tw-prose-lead': theme('colors.gray.400'),
+                        '--tw-prose-links': theme('colors.primary-fixed'),
+                        '--tw-prose-bold': theme('colors.white'),
+                        '--tw-prose-counters': theme('colors.gray.400'),
+                        '--tw-prose-bullets': theme('colors.gray.600'),
+                        '--tw-prose-hr': theme('colors.gray.700'),
+                        '--tw-prose-quotes': theme('colors.gray.100'),
+                        '--tw-prose-quote-borders': theme('colors.primary-fixed'),
+                        '--tw-prose-captions': theme('colors.gray.400'),
+                        '--tw-prose-code': theme('colors.white'),
+                        '--tw-prose-pre-code': theme('colors.gray.300'),
+                        '--tw-prose-pre-bg': 'rgba(0, 0, 0, 0.2)',
+                        '--tw-prose-th-borders': theme('colors.gray.600'),
+                        '--tw-prose-td-borders': theme('colors.gray.700'),
+                        '--tw-prose-invert-body': theme('colors.gray.300'),
+                        // --- Links (Invert) ---
                         a: {
                             color: theme("colors.primary-fixed"),
-                            textDecorationColor: theme("colors.primary-fixed"),
-                            textUnderlineOffset: "3px",
                             "&:hover": {
                                 color: theme("colors.white"),
-                                textDecorationColor: theme("colors.primary-fixed"),
                             },
-                        },
-                        "a code": {
-                            color: "inherit",
-                        },
-
-                        /* MARCADORES DE LISTA (●, 1., etc) */
-                        "ul > li::marker": {
-                            color: theme("colors.white / 0.7"),
-                        },
-                        "ol > li::marker": {
-                            color: theme("colors.white / 0.7"),
-                        },
-
-                        /* TÍTULOS */
-                        "h1, h2, h3, h4, h5, h6": {
-                            color: theme("colors.white"),
                         },
                     },
                 },
