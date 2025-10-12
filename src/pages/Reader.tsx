@@ -69,11 +69,7 @@ export default function Reader() {
                             onClick={onShare}
                             icon={<span>🔗</span>}
                         />
-                        <IconButton
-                            label="Alternar tema"
-                            onClick={toggleTheme}
-                            icon={<span>🌓</span>}
-                        />
+                        
                     </div>
                 </div>
 

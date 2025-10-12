@@ -44,8 +44,8 @@ export default defineConfig({
                 id: "/?id=78q",
                 description:
                     "Salve links e leia artigos no Modo Leitura Sem Distrações (MLSD).",
-                theme_color: "#0B1220",
-                background_color: "#0B1220",
+                theme_color: "#6750A4",
+                background_color: "#FEF7FF",
                 display: "standalone",
                 start_url: "/",
                 scope: "/",
