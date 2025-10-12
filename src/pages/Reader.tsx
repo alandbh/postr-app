@@ -51,7 +51,7 @@ export default function Reader() {
     }
 
     return (
-        <div className="bg-surface text-on-surface dark:bg-primary-dark dark:text-white/90 min-h-screen px-4 py-6">
+        <div className="bg-surface text-on-surface dark:bg-primary-dark dark:text-white/90 min-h-screen px-4">
             <article className="max-w-3xl mx-auto">
                 {/* Top actions bar */}
                 <div className="flex items-center justify-between gap-3 mb-6">

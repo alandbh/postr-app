@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import UpdateNotification from "./components/UpdateNotification";
 import IconButton from "@/components/IconButton";
 
 export default function App() {
   const { pathname } = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <div className="min-h-screen bg-surface text-on-surface font-sans">
       {/* Topbar */}
@@ -27,33 +28,47 @@ export default function App() {
             </Link>
           </>
         )}
-        <nav className="items-center gap-6 text-sm hidden md:flex">
+        <nav 
+        style={{ transition: "transform 0.3s ease-in-out", opacity: isMenuOpen ? 1 : 0, zIndex: isMenuOpen ? 1000 : -1 }} 
+        className="items-center md:text-sm bg-surface h-[100vh] md:h-auto w-full md:w-auto z-10 fixed top-0 left-0 flex flex-col md:flex-row md:relative justify-center md:justify-end md:items-center">
+
+<IconButton
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        className="md:hidden absolute top-7 right-6"
+          label=""
+          icon={<img src="/icons/icon-close.svg" alt="" className="h-8 md:h-5 w-8 md:w-5" />}
+        />
+          
+          <div className="-translate-x-5 -translate-y-20 flex gap-10 flex-col md:flex-row md:relative justify-center md:justify-end md:items-center text-xl">
           <a
             href="/articles"
-            className="inline-flex items-center gap-2 hover:text-primary"
+            className="inline-flex items-center gap-4 hover:text-primary"
           >
-            <img src="/icons/icon-bookmark.svg" alt="" className="h-5 w-5" />
+            <img src="/icons/icon-bookmark.svg" alt="" className="h-8 md:h-5 w-8 md:w-5" />
             <span>Meus artigos</span>
           </a>
           <a
             href="/account"
-            className="inline-flex items-center gap-2 hover:text-primary"
+            className="inline-flex items-center gap-4 hover:text-primary"
           >
-            <img src="/icons/icon-avatar.svg" alt="" className="h-5 w-5" />
+            <img src="/icons/icon-avatar.svg" alt="" className="h-8 md:h-5 w-8 md:w-5" />
             <span>Minha conta</span>
           </a>
           <button
-            className="p-2 rounded-full hover:bg-primary/10"
+            className="inline-flex items-center gap-4 hover:text-primary"
             aria-label="Alternar tema"
           >
-            <img src="/icons/icon-moon.svg" alt="" className="h-5 w-5" />
-          </button>
+            <img src="/icons/icon-moon.svg" alt="" className="h-8 md:h-5 w-8 md:w-5" />
+              <span>Alterar tema</span>
+            </button>
+          </div>
         </nav>
 
         <IconButton
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
         className="md:hidden"
           label=""
-          icon={<img src="/icons/icon-hamburger.svg" alt="" className="h-5 w-5" />}
+          icon={<img src="/icons/icon-hamburger.svg" alt="" className="h-8 md:h-5 w-8 md:w-5" />}
         />
 
       </header>
@@ -86,7 +101,7 @@ export default function App() {
                     </Link>
                 </nav>
             </header> */}
-      <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-6">
+      <main className="flex-1 max-w-3xl w-full mx-auto px-4">
         <Outlet />
       </main>
       <UpdateNotification />

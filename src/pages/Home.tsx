@@ -98,7 +98,7 @@ export default function Home() {
           </Button>
           </div>
             <div className="mt-2 text-sm text-on-surface/80 text-left">Cole a URL do artigo aqui</div>
-            <div className="mt-2 text-sm text-on-surface/80 text-left">V2.0.1</div>
+            <div className="mt-2 text-sm text-on-surface/80 text-left">V2.0.2</div>
 
         </div>
       </main>
