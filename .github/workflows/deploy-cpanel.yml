@@ -43,7 +43,7 @@ jobs:
           local-dir: ./dist-cpanel/
 
           # Diretório remoto no cPanel onde os arquivos serão colocados
-          server-dir: /home2/alanv326/postr.alanvasconcelos.net/
+          server-dir: /
 
           # [Opcional, mas recomendado] Limpa arquivos antigos no servidor
           # que não existem mais no novo build.
