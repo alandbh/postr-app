@@ -76,11 +76,18 @@ export default function Reader() {
                 {/* Article rendered via Prose */}
                 <div className="prose dark:prose-invert max-w-none prose-h1:font-bold prose-p:font-serif">
                     {/* Title + deck */}
-                    <header className="mb-4">
+                    <header className="mb-10">
                         <h1>{article.title || article.url}</h1>
-                        {article.excerpt && <p className="lead !text-article-excerpt !font-bold">{article.excerpt}</p>}
-                    </header>
-
+                        {/* Cover image (se houver) */}
+                    {article.image && (
+                        <figure className="!mb-6">
+                            <img
+                                src={article.image}
+                                alt=""
+                                className="!rounded-2xl"
+                            />
+                        </figure>
+                    )}
                     {/* Meta row (autor · ver original · excluir) */}
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm opacity-80">
                         {article.author && <span>By {article.author}</span>}
@@ -94,17 +101,15 @@ export default function Reader() {
                         </button>
                         <span className="ml-auto">{savedAt}</span>
                     </div>
+                    <div className="mt-6 border-b-2 border-slate-300">
+                        {article.excerpt && <p className="lead !text-article-excerpt !font-bold">{article.excerpt}</p>}
 
-                    {/* Cover image (se houver) */}
-                    {article.image && (
-                        <figure className="!mb-6">
-                            <img
-                                src={article.image}
-                                alt=""
-                                className="!rounded-2xl"
-                            />
-                        </figure>
-                    )}
+                    </div>
+                    </header>
+
+                    
+
+                    
 
                     {/* Content */}
                     <div
