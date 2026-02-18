@@ -25,6 +25,56 @@ function corsHeaders(origin: string) {
 	};
 }
 
+const FETCH_HEADERS = {
+	'User-Agent': 'Mozilla/5.0 (compatible; PostrReader/1.0; +https://postr.app)',
+	Accept: 'text/html,application/xhtml+xml',
+};
+
+/**
+ * Resolve URLs that use JS or meta-refresh redirects (e.g. share.google, search.app).
+ * Follows HTTP 3xx automatically via `redirect: 'follow'`, then inspects the HTML
+ * for <meta http-equiv="refresh"> and simple JS location assignments.
+ * Returns the final Response and the resolved HTML string.
+ */
+async function resolveUrl(targetUrl: string, maxHops = 5): Promise<{ finalResp: Response; html: string }> {
+	let currentUrl = targetUrl;
+
+	for (let i = 0; i < maxHops; i++) {
+		const resp = await fetch(currentUrl, { redirect: 'follow', headers: FETCH_HEADERS });
+		if (!resp.ok) return { finalResp: resp, html: '' };
+
+		const html = new TextDecoder('utf-8').decode(await resp.arrayBuffer());
+
+		// 1) <meta http-equiv="refresh" content="0;url=...">
+		const metaMatch = html.match(
+			/<meta[^>]+http-equiv\s*=\s*["']?refresh["']?[^>]+content\s*=\s*["']\d+;\s*url=([^"'\s>]+)["']/i
+		);
+		if (metaMatch) {
+			currentUrl = new URL(metaMatch[1], resp.url).toString();
+			continue;
+		}
+
+		// 2) JS redirect on small pages (typical of share-link intermediaries)
+		if (html.length < 10_000) {
+			const jsMatch = html.match(
+				/(?:window\.)?location(?:\.href)?\s*=\s*["']([^"']+)["']/
+			);
+			if (jsMatch && jsMatch[1].startsWith('http')) {
+				currentUrl = new URL(jsMatch[1], resp.url).toString();
+				continue;
+			}
+		}
+
+		// No further redirects found — this is the real page
+		return { finalResp: resp, html };
+	}
+
+	// Fallback: last hop
+	const resp = await fetch(currentUrl, { redirect: 'follow', headers: FETCH_HEADERS });
+	const html = new TextDecoder('utf-8').decode(await resp.arrayBuffer());
+	return { finalResp: resp, html };
+}
+
 export default {
 	// Tipos completos do handler (Cloudflare Workers)
 	async fetch(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
@@ -40,17 +90,8 @@ export default {
 			if (!target) return json({ error: 'Missing the ?url=' }, 400, env);
 
 			try {
-				const resp = await fetch(target, {
-					redirect: 'follow',
-					headers: {
-						'User-Agent': 'Mozilla/5.0 (compatible; PostrReader/1.0; +https://postr.app)',
-						Accept: 'text/html,application/xhtml+xml',
-					},
-				});
+				const { finalResp: resp, html } = await resolveUrl(target);
 				if (!resp.ok) return json({ error: `Upstream ${resp.status}` }, resp.status, env);
-
-				const buf = await resp.arrayBuffer();
-				const html = new TextDecoder('utf-8').decode(buf);
 
 				// linkedom -> Document (fazendo cast explícito para satisfazer o Readability)
 				const { document } = parseHTML(html) as unknown as { document: Document };

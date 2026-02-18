@@ -4,18 +4,27 @@ import Button from '@/components/Button'
 import { db } from '@/db/schema'
 import { parseArticleFromUrl } from '@/lib/parser'
 
-// Função para extrair URL de texto compartilhado
+// Domínios de serviços intermediários de compartilhamento (não são o artigo real)
+const SHARE_SERVICE_DOMAINS = ['share.google', 'search.app', 't.co', 'bit.ly', 'goo.gl', 'tinyurl.com', 'ow.ly']
+
+// Função para extrair URL de texto compartilhado.
+// Quando há múltiplas URLs, prioriza a que NÃO é de um serviço de share.
 function extractUrlFromText(text: string): string | null {
-  // Regex para encontrar URLs (http/https)
   const urlRegex = /(https?:\/\/[^\s]+)/g
   const matches = text.match(urlRegex)
   
-  if (matches && matches.length > 0) {
-    // Retorna a primeira URL encontrada
-    return matches[0]
-  }
-  
-  return null
+  if (!matches || matches.length === 0) return null
+  if (matches.length === 1) return matches[0]
+
+  // Preferir URLs que não sejam de serviços intermediários
+  const realUrl = matches.find(u => {
+    try {
+      const host = new URL(u).hostname.replace(/^www\./, '')
+      return !SHARE_SERVICE_DOMAINS.some(d => host === d || host.endsWith('.' + d))
+    } catch { return false }
+  })
+
+  return realUrl || matches[0]
 }
 
 export default function Home() {
