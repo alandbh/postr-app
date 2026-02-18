@@ -3,11 +3,13 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { db, type Article } from "@/db/schema";
 import IconButton from "@/components/IconButton";
 import TagChip from "@/components/TagChip";
+import TagModal from "@/components/TagModal";
 
 export default function Reader() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [article, setArticle] = useState<Article | null | undefined>(null);
+    const [showTagModal, setShowTagModal] = useState(false);
 
     useEffect(() => {
         if (!id) return;
@@ -105,6 +107,31 @@ export default function Reader() {
                         {article.excerpt && <p className="lead !text-article-excerpt !font-bold">{article.excerpt}</p>}
 
                     </div>
+
+                    {/* Tags section */}
+                    <div className="flex flex-wrap items-center gap-2 mt-4 not-prose">
+                        {article.tags && article.tags.length > 0 ? (
+                            <>
+                                {article.tags.map(tag => (
+                                    <TagChip key={tag}>{tag}</TagChip>
+                                ))}
+                                <button
+                                    onClick={() => setShowTagModal(true)}
+                                    className="text-xs px-2 py-1 rounded-full border border-dashed border-primary/40 text-primary/70 hover:border-primary hover:text-primary"
+                                    title="Editar tags"
+                                >
+                                    ✏️
+                                </button>
+                            </>
+                        ) : (
+                            <button
+                                onClick={() => setShowTagModal(true)}
+                                className="text-sm px-3 py-1.5 rounded-full border border-dashed border-primary/40 text-primary/70 hover:border-primary hover:text-primary"
+                            >
+                                + Adicionar tags
+                            </button>
+                        )}
+                    </div>
                     </header>
 
                     
@@ -117,6 +144,20 @@ export default function Reader() {
                     />
                 </div>
             </article>
+
+            {showTagModal && article && (
+                <TagModal
+                    articleId={article.id}
+                    articleTitle={article.title || article.url}
+                    initialTags={article.tags}
+                    onClose={() => {
+                        setShowTagModal(false);
+                        if (id) {
+                            db.articles.get(id).then(setArticle);
+                        }
+                    }}
+                />
+            )}
         </div>
     );
 }

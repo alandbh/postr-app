@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Input from '@/components/Input'
 import Button from '@/components/Button'
+import TagModal from '@/components/TagModal'
 import { db } from '@/db/schema'
 import { parseArticleFromUrl } from '@/lib/parser'
 
@@ -30,6 +31,7 @@ function extractUrlFromText(text: string): string | null {
 export default function Home() {
   const [url, setUrl] = useState('')
   const [loading, setLoading] = useState(false)
+  const [savedArticle, setSavedArticle] = useState<{ id: string; title: string } | null>(null)
 
   async function onSave() {
     if (!url) return
@@ -65,7 +67,7 @@ export default function Home() {
         tags: [],
         savedAt: Date.now()
       })
-      window.location.href = `/reader/${id}`
+      setSavedArticle({ id, title: parsed.title || cleanUrl })
     } finally {
       setLoading(false)
     }
@@ -111,6 +113,16 @@ export default function Home() {
 
         </div>
       </main>
+
+      {savedArticle && (
+        <TagModal
+          articleId={savedArticle.id}
+          articleTitle={savedArticle.title}
+          onClose={() => {
+            window.location.href = `/reader/${savedArticle.id}`
+          }}
+        />
+      )}
     </div>
   )
 }
