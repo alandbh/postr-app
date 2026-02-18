@@ -5,9 +5,10 @@ interface TagInputProps {
   onChange: (tags: string[]) => void
   suggestions: string[]
   placeholder?: string
+  onSubmit?: () => void
 }
 
-export default function TagInput({ value, onChange, suggestions, placeholder = 'Adicionar tag...' }: TagInputProps) {
+export default function TagInput({ value, onChange, suggestions, placeholder = 'Adicionar tag...', onSubmit }: TagInputProps) {
   const [input, setInput] = useState('')
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [highlightedIndex, setHighlightedIndex] = useState(-1)
@@ -44,13 +45,19 @@ export default function TagInput({ value, onChange, suggestions, placeholder = '
   }
 
   function handleKeyDown(e: React.KeyboardEvent) {
-    if (e.key === 'Enter' || e.key === ',') {
+    if (e.key === ',') {
       e.preventDefault()
       if (highlightedIndex >= 0 && filteredSuggestions[highlightedIndex]) {
         addTag(filteredSuggestions[highlightedIndex])
       } else if (input.trim()) {
         addTag(input.replace(/,/g, ''))
       }
+    } else if (e.key === 'Enter') {
+      e.preventDefault()
+      if (input.trim()) {
+        addTag(input)
+      }
+      onSubmit?.()
     } else if (e.key === 'Backspace' && !input && value.length > 0) {
       removeTag(value[value.length - 1])
     } else if (e.key === 'ArrowDown') {

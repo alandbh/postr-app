@@ -48,6 +48,7 @@ export default function TagModal({ articleId, articleTitle, initialTags = [], on
             onChange={setTags}
             suggestions={suggestions}
             placeholder="Digite uma tag..."
+            onSubmit={handleSave}
           />
           <p className="text-xs text-on-surface/50 mt-2">
             Pressione Enter para adicionar. Tags ajudam a organizar seus artigos.
