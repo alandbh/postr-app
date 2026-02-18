@@ -14,13 +14,13 @@ export default function ArticleCard({ article }: { article: Article }) {
           {article.savedAt ? new Date(article.savedAt).toLocaleString('pt-BR', { dateStyle: 'medium' }) : ''}
         </div>
 
-        <h3 className="text-sm md:text-lg text-primary font-semibold group-hover:underline">{article.title || article.url}</h3>
+        <h3 className="text-sm md:text-lg text-primary font-semibold group-hover:underline line-clamp-3 md:line-clamp-none">{article.title || article.url}</h3>
         
         {article.tags && article.tags.length > 0 && (
           <div className="flex gap-2 mt-2 flex-wrap">
-            {article.tags.map(t => (
-              <span key={t} className="text-xs px-2 py-1 rounded-full bg-white/10 border border-white/10">{t}</span>
-            ))}
+              {article.tags.map(t => (
+                <span key={t} className="inline-flex text-nowrap items-center gap-1 text-xs px-3 py-1 rounded-full font-sans bg-primary/20 text-primary">{t}</span>
+              ))}
           </div>
         )}
       </div>
