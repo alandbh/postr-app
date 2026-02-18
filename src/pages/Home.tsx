@@ -90,26 +90,26 @@ export default function Home() {
     </div>
         {/* Campo + botão */}
         <div className="mt-16 flex flex-col  gap-3">
-          <div className="w-full max-w-2xl flex items-center gap-3">
+          <div className="w-full max-w-2xl flex items-center gap-3 flex-col">
             <Input
               placeholder="https://"
               value={url}
               onChange={e => setUrl(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && onSave()}
-              className="h-12 rounded-full border-2 border-primary/30 focus:border-primary"
+              className="h-12 rounded-full border-2 border-primary/30 focus:border-primary flex-1"
               aria-label="Cole a URL do artigo aqui"
             />
           <Button
             onClick={onSave}
             disabled={!url}
             isLoading={loading}
-            className="h-12 px-6 rounded-full bg-primary text-on-primary-contrast hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-primary-fixed"
+            className="h-12 px-12 py-3 w-full md:w-auto flex-1 rounded-full bg-primary text-on-primary-contrast hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-primary-fixed"
           >
             SALVAR
           </Button>
           </div>
             <div className="mt-2 text-sm text-on-surface/80 text-left">Cole a URL do artigo aqui</div>
-            <div className="mt-2 text-sm text-on-surface/80 text-left">V2.0.3</div>
+            <div className="mt-2 text-sm text-on-surface/80 text-left">V3.0.0</div>
 
         </div>
       </main>
