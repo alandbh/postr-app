@@ -35,12 +35,12 @@ export default function TagModal({ articleId, articleTitle, initialTags = [], on
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="bg-surface rounded-2xl w-full max-w-md p-6 shadow-xl">
-        <h2 className="text-xl font-bold text-on-surface mb-2">Adicionar Tags</h2>
-        
-        <p className="text-sm text-on-surface/70 mb-4 line-clamp-2">
+      <div className="bg-surface rounded-2xl w-full max-w-full md:max-w-xl p-6 shadow-xl">
+        {/* <h2 className="text-xl font-bold text-on-surface mb-2">Adicionar Tags</h2> */}
+        <span className='text-sm text-on-surface/70 mb-4'>ARTIGO:</span>
+        <h1 className="text-on-surface/70 mb-4 line-clamp-2 font-serif font-bold text-xl md:text-article-h1">
           {articleTitle}
-        </p>
+        </h1>
 
         <div className="mb-6">
           <TagInput
@@ -51,7 +51,7 @@ export default function TagModal({ articleId, articleTitle, initialTags = [], on
             onSubmit={handleSave}
           />
           <p className="text-xs text-on-surface/50 mt-2">
-            Pressione Enter para adicionar. Tags ajudam a organizar seus artigos.
+            Adicione tags (separadas por vírgula) para organizar seus artigos.
           </p>
         </div>
 

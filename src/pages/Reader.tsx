@@ -53,6 +53,7 @@ export default function Reader() {
     }
 
     return (
+        <>
         <div className="bg-surface text-on-surface dark:bg-primary-dark dark:text-white/90 min-h-screen px-4">
             <article className="max-w-3xl mx-auto">
                 {/* Top actions bar */}
@@ -103,10 +104,10 @@ export default function Reader() {
                         </button>
                         <span className="ml-auto">{savedAt}</span>
                     </div>
-                    <div className="mt-6 border-b-2 border-slate-300">
+                    {/* <div className="mt-6 border-b-2 border-slate-300">
                         {article.excerpt && <p className="lead !text-article-excerpt !font-bold">{article.excerpt}</p>}
 
-                    </div>
+                    </div> */}
 
                     {/* Tags section */}
                     <div className="flex flex-wrap items-center gap-2 mt-4 not-prose">
@@ -117,10 +118,10 @@ export default function Reader() {
                                 ))}
                                 <button
                                     onClick={() => setShowTagModal(true)}
-                                    className="text-xs px-2 py-1 rounded-full border border-dashed border-primary/40 text-primary/70 hover:border-primary hover:text-primary"
+                                    className="text-xs px-2 py-1 rounded-full font-sans font-bold border border-dashed border-primary/40 text-primary/70 hover:border-primary hover:text-primary"
                                     title="Editar tags"
                                 >
-                                    ✏️
+                                    Editar tags
                                 </button>
                             </>
                         ) : (
@@ -145,6 +146,7 @@ export default function Reader() {
                 </div>
             </article>
 
+        </div>
             {showTagModal && article && (
                 <TagModal
                     articleId={article.id}
@@ -158,6 +160,6 @@ export default function Reader() {
                     }}
                 />
             )}
-        </div>
+        </>
     );
 }
