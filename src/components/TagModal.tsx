@@ -34,7 +34,7 @@ export default function TagModal({ articleId, articleTitle, initialTags = [], on
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div className="fixed inset-0 z-50 flex items-start pt-12 md:items-center md:pt-0 justify-center bg-black/60 backdrop-blur-sm p-4">
       <div className="bg-surface rounded-2xl w-full max-w-full md:max-w-xl p-6 shadow-xl">
         {/* <h2 className="text-xl font-bold text-on-surface mb-2">Adicionar Tags</h2> */}
         <span className='text-sm text-on-surface/70 mb-4'>ARTIGO:</span>
