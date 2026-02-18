@@ -176,7 +176,7 @@ export default function ShareTarget() {
   // Sempre mostrar a interface de debug, mesmo com erro
 
   return (
-    <div className="min-h-screen bg-brand-900 text-white p-4">
+    <div className="min-h-screen bg-brand-900 text-white p-4 overflow-x-hidden">
       <div className="max-w-2xl mx-auto">
         <h1 className="text-2xl font-bold mb-6">Postr - Debug Share Target</h1>
         
@@ -195,7 +195,7 @@ export default function ShareTarget() {
             <h2 className="text-lg font-semibold mb-2">Debug Info:</h2>
             <div className="space-y-1 text-sm">
               {debugInfo.map((info, index) => (
-                <div key={index} className="text-gray-300 font-mono">
+                <div key={index} className="text-gray-300 font-mono break-all">
                   {index + 1}. {info}
                 </div>
               ))}
