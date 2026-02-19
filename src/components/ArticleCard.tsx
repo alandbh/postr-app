@@ -2,7 +2,12 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import type { Article } from '@/db/schema'
 
-export default function ArticleCard({ article }: { article: Article }) {
+interface ArticleCardProps {
+  article: Article
+  onTagClick?: (tag: string) => void
+}
+
+export default function ArticleCard({ article, onTagClick }: ArticleCardProps) {
   return (
     <Link to={`/reader/${article.id}`} className="flex gap-4 group rounded-2xl border border-white/10 py-4 hover:border-white/20 overflow-hidden">
       <figure className="w-[100px] h-[110px] md:w-[200px] md:h-[120px] block rounded-lg overflow-hidden">
@@ -19,7 +24,22 @@ export default function ArticleCard({ article }: { article: Article }) {
         {article.tags && article.tags.length > 0 && (
           <div className="flex gap-2 mt-2 overflow-x-auto scrollbar-hide">
               {article.tags.map(t => (
-                <span key={t} className="shrink-0 text-xs px-3 py-1 rounded-full font-sans bg-primary/20 text-primary">{t}</span>
+                <button
+                  key={t}
+                  type="button"
+                  onClick={(e) => {
+                    if (onTagClick) {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      onTagClick(t)
+                    }
+                  }}
+                  className={`shrink-0 text-xs px-3 py-1 rounded-full font-sans bg-primary/20 text-primary ${
+                    onTagClick ? 'hover:bg-primary/30 cursor-pointer' : ''
+                  }`}
+                >
+                  {t}
+                </button>
               ))}
           </div>
         )}
