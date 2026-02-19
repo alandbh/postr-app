@@ -9,7 +9,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-surface text-on-surface font-sans">
       {/* Topbar */}
-      <header className="mx-auto max-w-5xl px-6 py-4 flex items-center justify-end">
+      <header className="mx-auto max-w-5xl pl-4 pr-0 py-2 flex items-center justify-end">
         {pathname !== "/" && (
           <>
             <Link to="/" className="font-semibold tracking-tight mr-auto mt-5 hidden md:block">
