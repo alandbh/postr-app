@@ -1,15 +1,20 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { db, type Article } from "@/db/schema";
 import IconButton from "@/components/IconButton";
 import TagChip from "@/components/TagChip";
 import TagModal from "@/components/TagModal";
+import TagsBottomSheet from "@/components/TagsBottomSheet";
 
 export default function Reader() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
     const [article, setArticle] = useState<Article | null | undefined>(null);
     const [showTagModal, setShowTagModal] = useState(false);
+    const [showBottomSheet, setShowBottomSheet] = useState(
+        location.state?.newArticle === true
+    );
 
     useEffect(() => {
         if (!id) return;
@@ -154,6 +159,18 @@ export default function Reader() {
                     initialTags={article.tags}
                     onClose={() => {
                         setShowTagModal(false);
+                        if (id) {
+                            db.articles.get(id).then(setArticle);
+                        }
+                    }}
+                />
+            )}
+            {showBottomSheet && article && (
+                <TagsBottomSheet
+                    articleId={article.id}
+                    articleTitle={article.title || article.url}
+                    onClose={() => {
+                        setShowBottomSheet(false);
                         if (id) {
                             db.articles.get(id).then(setArticle);
                         }

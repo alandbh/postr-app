@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { db } from '@/db/schema'
 import { parseArticleFromUrl } from '@/lib/parser'
-import TagModal from '@/components/TagModal'
 
 // Recebe POST share_target (urlencoded). Vite em dev não lida com POST de fora,
 // mas em build (PWA) o navegador entrega para esta rota com params na URL (?title=&text=&url=).
@@ -29,10 +29,10 @@ function extractUrlFromText(text: string): string | null {
 }
 
 export default function ShareTarget() {
+  const navigate = useNavigate()
   const [status, setStatus] = useState('Processando...')
   const [error, setError] = useState<string | null>(null)
   const [debugInfo, setDebugInfo] = useState<string[]>([])
-  const [savedArticle, setSavedArticle] = useState<{ id: string; title: string } | null>(null)
 
   useEffect(() => {
     const processSharedUrl = async () => {
@@ -71,7 +71,7 @@ export default function ShareTarget() {
         console.log('Dados compartilhados:', { url, text })
 
         // Tentar extrair URL de qualquer parâmetro disponível
-        let extractedUrl = null
+        let extractedUrl: string | null = null
         let sourceParam = ''
         
         // Primeiro, verificar se há parâmetros na URL (GET)
@@ -157,7 +157,7 @@ export default function ShareTarget() {
           
           setDebugInfo(prev => [...prev, 'Artigo salvo com sucesso!'])
           setStatus('Artigo salvo!')
-          setSavedArticle({ id, title: parsed.title || cleanUrl })
+          navigate(`/reader/${id}`, { state: { newArticle: true } })
           return
         } catch (parseError) {
           setDebugInfo(prev => [...prev, `ERRO no parsing: ${parseError}`])
@@ -184,7 +184,7 @@ export default function ShareTarget() {
         <div className="bg-brand-800 p-4 rounded-lg mb-4">
           <h2 className="text-lg font-semibold mb-2">Status:</h2>
           <div className="flex items-center gap-2">
-            {!savedArticle && <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>}
+            {!error && <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>}
             <p className="text-gray-300">{status}</p>
           </div>
         </div>
@@ -218,15 +218,6 @@ export default function ShareTarget() {
         )}
       </div>
 
-      {savedArticle && (
-        <TagModal
-          articleId={savedArticle.id}
-          articleTitle={savedArticle.title}
-          onClose={() => {
-            window.location.href = `/reader/${savedArticle.id}`
-          }}
-        />
-      )}
     </div>
   )
 }
