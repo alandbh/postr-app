@@ -4,6 +4,11 @@ import { precacheAndRoute } from 'workbox-precaching';
 // Precaching
 precacheAndRoute(self.__WB_MANIFEST);
 
+self.skipWaiting();
+self.addEventListener('activate', event => {
+    event.waitUntil(self.clients.claim());
+});
+
 self.addEventListener('fetch', (event) => {
     // Interceptar POST requests para /share-target
     if (event.request.method === 'POST' && event.request.url.includes('/share-target')) {
