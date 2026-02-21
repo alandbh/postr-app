@@ -37,35 +37,23 @@ export default function ShareTarget() {
   useEffect(() => {
     const processSharedUrl = async () => {
       try {
+        // Primeiro, verificar se há dados injetados pelo SW (POST convertido)
+        const swData = (window as any).__SHARE_TARGET_DATA__ as { title?: string; text?: string; url?: string } | undefined
+        
+        // Depois, verificar query params (GET direto)
         const sp = new URLSearchParams(location.search)
-        const url = sp.get('url')
-        const text = sp.get('text')
-        const title = sp.get('title')
-
-        // Debug: Mostrar dados recebidos
+        
+        // Priorizar dados do SW, depois query params
+        const url = swData?.url || sp.get('url')
+        const text = swData?.text || sp.get('text')
+        const title = swData?.title || sp.get('title')
+        
+        const source = swData ? 'SW (POST interceptado)' : 'Query params (GET)'
+        setDebugInfo(prev => [...prev, `Fonte dos dados: ${source}`])
         setDebugInfo(prev => [...prev, `URL recebida: "${url || 'null'}"`])
         setDebugInfo(prev => [...prev, `Text recebido: "${text || 'null'}"`])
         setDebugInfo(prev => [...prev, `Title recebido: "${title || 'null'}"`])
         setDebugInfo(prev => [...prev, `URL completa: "${location.href}"`])
-        // Detectar método real (POST vs GET)
-        const isPost = document.referrer === '' && location.search === ''
-        const method = isPost ? 'POST' : 'GET'
-        setDebugInfo(prev => [...prev, `Método detectado: ${method}`])
-        setDebugInfo(prev => [...prev, `Document referrer: "${document.referrer}"`])
-        
-        // Verificar se é um POST real do Share Target API
-        if (isPost && !url && !text && !title) {
-          setDebugInfo(prev => [...prev, 'AVISO: POST detectado mas sem parâmetros - possível problema no cPanel'])
-          setDebugInfo(prev => [...prev, 'Tentando ler dados do body do POST...'])
-          
-          // Tentar ler dados do body (se disponível)
-          try {
-            const body = document.body.innerHTML
-            setDebugInfo(prev => [...prev, `Body content: "${body.substring(0, 200)}..."`])
-          } catch (e) {
-            setDebugInfo(prev => [...prev, `Erro ao ler body: ${e}`])
-          }
-        }
         setDebugInfo(prev => [...prev, `Search params: "${location.search}"`])
 
         console.log('Dados compartilhados:', { url, text })

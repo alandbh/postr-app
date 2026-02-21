@@ -18,7 +18,6 @@ self.addEventListener('fetch', (event) => {
 
 async function handleShareTarget(request) {
     try {
-        // Obter os dados do FormData
         const formData = await request.formData();
         const title = formData.get('title') || '';
         const text = formData.get('text') || '';
@@ -26,19 +25,23 @@ async function handleShareTarget(request) {
 
         console.log('Share Target POST recebido:', { title, text, url });
 
-        // Construir URL com parâmetros GET
-        const params = new URLSearchParams();
-        if (title) params.set('title', title);
-        if (text) params.set('text', text);
-        if (url) params.set('url', url);
+        // Buscar index.html do cache ou da rede
+        const cachedResponse = await caches.match('/index.html');
+        const htmlResponse = cachedResponse || await fetch('/index.html');
+        const html = await htmlResponse.text();
 
-        const redirectUrl = `/share-target?${params.toString()}`;
-        
-        // Redirecionar para a página com os parâmetros
-        return Response.redirect(redirectUrl, 303);
+        // Injetar os dados do share no HTML para o React ler
+        const shareData = JSON.stringify({ title, text, url });
+        const injectedHtml = html.replace(
+            '</head>',
+            `<script>window.__SHARE_TARGET_DATA__=${shareData};</script></head>`
+        );
+
+        return new Response(injectedHtml, {
+            headers: { 'Content-Type': 'text/html; charset=utf-8' }
+        });
     } catch (error) {
         console.error('Erro ao processar Share Target:', error);
-        // Em caso de erro, redirecionar para a página inicial
         return Response.redirect('/', 303);
     }
 }
