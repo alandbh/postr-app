@@ -17,6 +17,11 @@ export default function TagsBottomSheet({ articleId, articleTitle, onClose }: Ta
     return () => clearTimeout(timer)
   }, [])
 
+  function handleClose() {
+    setIsVisible(false)
+    setTimeout(onClose, 250)
+  }
+
   function handleAddTags() {
     setShowTagModal(true)
   }
@@ -29,7 +34,7 @@ export default function TagsBottomSheet({ articleId, articleTitle, onClose }: Ta
   return (
     <>
       <Transition show={isVisible && !showTagModal} as={Fragment}>
-        <Dialog onClose={onClose} className="relative z-40">
+        <Dialog onClose={handleClose} className="relative z-40">
           <TransitionChild
             as={Fragment}
             enter="ease-out duration-500"
@@ -72,7 +77,7 @@ export default function TagsBottomSheet({ articleId, articleTitle, onClose }: Ta
                 </button>
 
                 <button
-                  onClick={onClose}
+                  onClick={handleClose}
                   className="w-full py-3 text-sm text-on-surface/60 hover:text-on-surface transition-colors"
                 >
                   Não, obrigado
