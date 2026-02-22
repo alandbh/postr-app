@@ -154,53 +154,80 @@ function json(obj: any, status = 200, env: Env) {
 	});
 }
 
-function fixImages(html: string, baseUrl: string) {
-	const { document } = parseHTML(`<div id="root">${html}</div>`) as unknown as { document: Document };
-	const root = document.getElementById('root')!;
+function fixImages(html: string, baseUrl: string): string {
+	let result = html;
 
-	// <noscript><img/></noscript> → img normal
-	root.querySelectorAll('noscript').forEach((ns) => {
-		const tmp = parseHTML(ns.textContent || '') as unknown as { document: Document };
-		const img = tmp.document.querySelector('img');
-		if (img) ns.replaceWith(img);
+	// 1. <noscript><img...></noscript> → extrai a <img> de dentro
+	result = result.replace(/<noscript[^>]*>([\s\S]*?)<\/noscript>/gi, (match, inner) => {
+		const imgMatch = inner.match(/<img[^>]*>/i);
+		return imgMatch ? imgMatch[0] : match;
 	});
 
-	// data-src / data-srcset → src / srcset
-	root.querySelectorAll<HTMLImageElement>('img').forEach((img) => {
-		const dataSrc = img.getAttribute('data-src') || img.getAttribute('data-original') || img.getAttribute('data-lazy-src');
-		const dataSrcSet = img.getAttribute('data-srcset');
-		if (dataSrc && !img.getAttribute('src')) img.setAttribute('src', dataSrc);
-		if (dataSrcSet && !img.getAttribute('srcset')) img.setAttribute('srcset', dataSrcSet);
+	// 2. Processa todas as <img> tags
+	result = result.replace(/<img([^>]*)>/gi, (match, attrs) => {
+		let newAttrs = attrs;
 
-		// absolutiza src/srcset
-		const src = img.getAttribute('src');
-		if (src) img.setAttribute('src', new URL(src, baseUrl).toString());
+		// data-src / data-original / data-lazy-src → src (se não tiver src)
+		if (!/\ssrc\s*=/i.test(newAttrs)) {
+			const dataSrcMatch = newAttrs.match(/\s(data-src|data-original|data-lazy-src)\s*=\s*["']([^"']+)["']/i);
+			if (dataSrcMatch) {
+				newAttrs += ` src="${dataSrcMatch[2]}"`;
+			}
+		}
 
-		const srcset = img.getAttribute('srcset');
-		if (srcset) {
+		// data-srcset → srcset (se não tiver srcset)
+		if (!/\ssrcset\s*=/i.test(newAttrs)) {
+			const dataSrcsetMatch = newAttrs.match(/\sdata-srcset\s*=\s*["']([^"']+)["']/i);
+			if (dataSrcsetMatch) {
+				newAttrs += ` srcset="${dataSrcsetMatch[1]}"`;
+			}
+		}
+
+		// Absolutiza src
+		newAttrs = newAttrs.replace(/\ssrc\s*=\s*["']([^"']+)["']/gi, (m: string, url: string) => {
+			try {
+				return ` src="${new URL(url, baseUrl).toString()}"`;
+			} catch {
+				return m;
+			}
+		});
+
+		// Absolutiza srcset
+		newAttrs = newAttrs.replace(/\ssrcset\s*=\s*["']([^"']+)["']/gi, (m: string, srcset: string) => {
+			try {
+				const fixed = srcset
+					.split(',')
+					.map((part: string) => {
+						const [u, ...rest] = part.trim().split(/\s+/);
+						const absUrl = new URL(u, baseUrl).toString();
+						return rest.length ? `${absUrl} ${rest.join(' ')}` : absUrl;
+					})
+					.join(', ');
+				return ` srcset="${fixed}"`;
+			} catch {
+				return m;
+			}
+		});
+
+		return `<img${newAttrs}>`;
+	});
+
+	// 3. Processa <source> dentro de <picture> (absolutiza srcset)
+	result = result.replace(/<source([^>]*srcset\s*=\s*["'])([^"']+)(["'][^>]*)>/gi, (match, before, srcset, after) => {
+		try {
 			const fixed = srcset
 				.split(',')
-				.map((part) => {
-					const [u, d] = part.trim().split(' ');
-					return `${new URL(u, baseUrl).toString()} ${d || ''}`.trim();
+				.map((part: string) => {
+					const [u, ...rest] = part.trim().split(/\s+/);
+					const absUrl = new URL(u, baseUrl).toString();
+					return rest.length ? `${absUrl} ${rest.join(' ')}` : absUrl;
 				})
 				.join(', ');
-			img.setAttribute('srcset', fixed);
+			return `<source${before}${fixed}${after}>`;
+		} catch {
+			return match;
 		}
 	});
 
-	// <source> dentro de <picture>
-	root.querySelectorAll<HTMLSourceElement>('source[srcset]').forEach((source) => {
-		const srcset = source.getAttribute('srcset')!;
-		const fixed = srcset
-			.split(',')
-			.map((part) => {
-				const [u, d] = part.trim().split(' ');
-				return `${new URL(u, baseUrl).toString()} ${d || ''}`.trim();
-			})
-			.join(', ');
-		source.setAttribute('srcset', fixed);
-	});
-
-	return root.innerHTML;
+	return result;
 }
