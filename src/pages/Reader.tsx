@@ -5,6 +5,7 @@ import IconButton from "@/components/IconButton";
 import TagChip from "@/components/TagChip";
 import TagModal from "@/components/TagModal";
 import TagsBottomSheet from "@/components/TagsBottomSheet";
+import ShareBottomSheet from "@/components/ShareBottomSheet";
 
 export default function Reader() {
     const { id } = useParams();
@@ -15,6 +16,7 @@ export default function Reader() {
     const [showBottomSheet, setShowBottomSheet] = useState(
         location.state?.newArticle === true
     );
+    const [showShareSheet, setShowShareSheet] = useState(false);
 
     useEffect(() => {
         if (!id) return;
@@ -47,16 +49,6 @@ export default function Reader() {
         root.style.colorScheme = root.classList.contains("dark") ? "dark" : "light";
     }
 
-    async function onShare() {
-        if (!article) return;
-        if (navigator.share) {
-            await navigator.share({ title: article.title, url: article.url });
-        } else {
-            await navigator.clipboard.writeText(article.url);
-            alert("Link copiado!");
-        }
-    }
-
     return (
         <>
         <div className="bg-surface text-on-surface dark:bg-primary-dark dark:text-white/90 min-h-screen px-4">
@@ -74,10 +66,9 @@ export default function Reader() {
                     <div className="flex items-center gap-2">
                         <IconButton
                             label="Compartilhar"
-                            onClick={onShare}
+                            onClick={() => setShowShareSheet(true)}
                             icon={<span>🔗</span>}
                         />
-                        
                     </div>
                 </div>
 
@@ -175,6 +166,14 @@ export default function Reader() {
                             db.articles.get(id).then(setArticle);
                         }
                     }}
+                />
+            )}
+            {article && (
+                <ShareBottomSheet
+                    open={showShareSheet}
+                    onClose={() => setShowShareSheet(false)}
+                    articleTitle={article.title || article.url}
+                    articleUrl={article.url}
                 />
             )}
         </>

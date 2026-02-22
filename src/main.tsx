@@ -8,10 +8,12 @@ import Reader from './pages/Reader'
 import Articles from './pages/Articles'
 import Account from './pages/Account'
 import ShareTarget from './pages/ShareTarget'
+import ReadOnly from './pages/ReadOnly'
 const router = createBrowserRouter([
   { path: '/', element: <App />, children: [
     { index: true, element: <Home /> },
     { path: 'reader/:id', element: <Reader /> },
+    { path: 'read', element: <ReadOnly /> },
     { path: 'articles', element: <Articles /> },
     { path: 'account', element: <Account /> },
     { path: 'share-target', element: <ShareTarget /> }
