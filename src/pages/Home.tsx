@@ -127,22 +127,12 @@ export default function Home() {
             <Button onClick={onSave} disabled={!url} isLoading={loading}>
               Salvar
             </Button>
-
-            <button className="h-12 w-full bg-primary rounded-xl inline-flex items-center justify-center text-white/80 font-semibold leading-6">
-              Button primary full
-            </button>
-            <button className="h-12 w-full border border-primary/30 rounded-xl inline-flex items-center justify-center text-primary/50 font-semibold leading-6">
-              Button outline full
-            </button>
-            <button className="h-12 w-full inline-flex items-center justify-center text-on-surface/50 font-semibold leading-6">
-              Button ghost full
-            </button>
           </div>
           <div className="mt-2 text-sm text-on-surface/80 text-left">
             Cole a URL do artigo aqui
           </div>
           <div className="mt-2 text-sm text-on-surface/80 text-left">
-            V3.1.4
+            V3.1.5
           </div>
         </div>
       </main>
