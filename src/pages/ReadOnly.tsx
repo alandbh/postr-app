@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import { db } from "@/db/schema";
 import { parseArticleFromUrl } from "@/lib/parser";
 import IconButton from "@/components/IconButton";
+import Button from "@/components/Button";
 
 interface ParsedArticle {
     url: string;
@@ -108,7 +109,7 @@ export default function ReadOnly() {
 
     return (
         <div className="bg-surface text-on-surface dark:bg-primary-dark dark:text-white/90 min-h-screen px-4">
-            <article className="max-w-3xl mx-auto">
+            <article className="max-w-3xl mx-auto pb-20">
                 {/* Top actions bar */}
                 <div className="flex items-center justify-between gap-3 mb-6">
                     <Link
@@ -129,7 +130,7 @@ export default function ReadOnly() {
                 </div>
 
                 {/* Save banner */}
-                <div className="bg-primary/10 border border-primary/30 rounded-lg p-4 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                {/* <div className="bg-primary/10 border border-primary/30 rounded-lg p-4 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                     <div>
                         <p className="font-medium text-primary">Gostou do artigo?</p>
                         <p className="text-sm text-on-surface/70">Salve na sua biblioteca para ler depois</p>
@@ -141,7 +142,7 @@ export default function ReadOnly() {
                     >
                         {saving ? "Salvando..." : "Salvar na biblioteca"}
                     </button>
-                </div>
+                </div> */}
 
                 {/* Article rendered via Prose */}
                 <div className="prose dark:prose-invert max-w-none prose-h1:font-bold prose-p:font-serif">
@@ -171,14 +172,13 @@ export default function ReadOnly() {
                 </div>
 
                 {/* Bottom save CTA */}
-                <div className="mt-10 mb-8 text-center">
-                    <button
-                        onClick={onSave}
-                        disabled={saving}
-                        className="bg-primary text-on-primary px-6 py-3 rounded-lg font-medium hover:bg-primary/90 disabled:opacity-50"
-                    >
-                        {saving ? "Salvando..." : "Salvar na minha biblioteca"}
-                    </button>
+                <div className="mt-10 mb-8 text-center border-t border-on-surface/50 pt-10">
+                <h2 className="text-lg font-bold text-on-surface mb-4">Gostou do artigo?</h2>
+                <p className="text-sm text-on-surface/70 mb-8">Salve na sua biblioteca para ler depois</p>
+                    <Button onClick={onSave} disabled={saving} isLoading={saving} full>
+                        Salvar na minha biblioteca
+                    </Button>
+                    
                 </div>
             </article>
         </div>
