@@ -132,7 +132,7 @@ export default function Home() {
             Cole a URL do artigo aqui
           </div>
           <div className="mt-2 text-sm text-on-surface/80 text-left">
-            V3.1.5
+            V3.2.0
           </div>
         </div>
       </main>

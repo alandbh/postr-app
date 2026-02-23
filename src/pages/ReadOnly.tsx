@@ -4,6 +4,7 @@ import { db } from "@/db/schema";
 import { parseArticleFromUrl } from "@/lib/parser";
 import IconButton from "@/components/IconButton";
 import Button from "@/components/Button";
+import InstallPrompt from "@/components/InstallPrompt";
 
 interface ParsedArticle {
     url: string;
@@ -181,6 +182,8 @@ export default function ReadOnly() {
                     
                 </div>
             </article>
+            
+            <InstallPrompt />
         </div>
     );
 }
