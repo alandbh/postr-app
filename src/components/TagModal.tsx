@@ -42,7 +42,7 @@ export default function TagModal({ articleId, articleTitle, initialTags = [], on
           {articleTitle}
         </h1>
 
-        <div className="mb-6">
+        <div className="mb-6 mt-6">
           <TagInput
             value={tags}
             onChange={setTags}
@@ -50,26 +50,34 @@ export default function TagModal({ articleId, articleTitle, initialTags = [], on
             placeholder="Digite uma tag..."
             onSubmit={handleSave}
           />
-          <p className="text-xs text-on-surface/50 mt-2">
+          <p className=" text-on-surface/50 mt-2">
             Adicione tags (separadas por vírgula) para organizar seus artigos.
           </p>
         </div>
 
-        <div className="flex gap-3 justify-end">
-          <Button
+        <div className="flex gap-3 justify-end mt-10">
+          {/* <Button
             onClick={handleSkip}
             className="px-4 py-2 text-on-surface/70 hover:text-on-surface"
           >
             Pular
-          </Button>
+          </Button> */}
           <Button
+            onClick={handleSkip}
+            variant="ghost"
+            
+          >
+            Pular
+          </Button>
+          {/* <Button
             onClick={handleSave}
             isLoading={saving}
             disabled={saving}
             className="px-6 py-2 bg-primary text-on-primary-contrast hover:bg-primary/90 rounded-lg"
           >
             Salvar Tags
-          </Button>
+          </Button> */}
+          <Button variant="primary"  onClick={handleSave}>Salvar Tags</Button>
         </div>
       </div>
     </div>
