@@ -9,6 +9,7 @@ import Articles from './pages/Articles'
 import Account from './pages/Account'
 import ShareTarget from './pages/ShareTarget'
 import ReadOnly from './pages/ReadOnly'
+import About from './pages/About'
 const router = createBrowserRouter([
   { path: '/', element: <App />, children: [
     { index: true, element: <Home /> },
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
     { path: 'read', element: <ReadOnly /> },
     { path: 'articles', element: <Articles /> },
     { path: 'account', element: <Account /> },
+    { path: 'about', element: <About /> },
     { path: 'share-target', element: <ShareTarget /> }
   ]}
 ], {
