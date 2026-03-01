@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
+import BlockedErrorView from "@/components/BlockedErrorView";
 import { db } from "@/db/schema";
 import { parseArticleFromUrl } from "@/lib/parser";
 
@@ -44,14 +45,14 @@ export default function Home() {
   const navigate = useNavigate();
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<{ url: string } | null>(null);
 
   async function onSave() {
     if (!url) return;
     setLoading(true);
+    setError(null);
+    let cleanUrl = url.trim();
     try {
-      // Extrair URL do texto colado
-      let cleanUrl = url.trim();
-
       // Se não começa com http, tentar extrair URL do texto
       if (!cleanUrl.startsWith("http")) {
         const extractedUrl = extractUrlFromText(cleanUrl);
@@ -61,7 +62,7 @@ export default function Home() {
           setUrl(cleanUrl);
         } else {
           setLoading(false);
-          alert("Nenhuma URL válida encontrada no texto colado");
+          setError({ url: "" });
           return;
         }
       }
@@ -80,9 +81,29 @@ export default function Home() {
         savedAt: Date.now(),
       });
       navigate(`/reader/${id}`, { state: { newArticle: true } });
+    } catch (err) {
+      setError({ url: cleanUrl });
     } finally {
       setLoading(false);
     }
+  }
+
+  if (error) {
+    return (
+      <BlockedErrorView
+        message={
+          error.url
+            ? "Parece que este site bloqueou o Postr. 🥺"
+            : "Nenhuma URL válida encontrada no texto colado."
+        }
+        subMessage={
+          error.url
+            ? "Tente acessar o artigo clicando no link original."
+            : undefined
+        }
+        url={error.url || undefined}
+      />
+    );
   }
 
   return (
@@ -132,7 +153,7 @@ export default function Home() {
             Cole a URL do artigo aqui
           </div>
           <div className="mt-2 text-sm text-on-surface/80 text-left">
-            V3.2.1
+            V3.2.2
           </div>
         </div>
       </main>
