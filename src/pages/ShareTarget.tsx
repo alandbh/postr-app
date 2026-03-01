@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { db } from '@/db/schema'
 import { parseArticleFromUrl } from '@/lib/parser'
+import BlockedErrorView from '@/components/BlockedErrorView'
 
 // Recebe POST share_target (urlencoded). Vite em dev não lida com POST de fora,
 // mas em build (PWA) o navegador entrega para esta rota com params na URL (?title=&text=&url=).
@@ -32,6 +33,7 @@ export default function ShareTarget() {
   const navigate = useNavigate()
   const [status, setStatus] = useState('Processando...')
   const [error, setError] = useState<string | null>(null)
+  const [errorUrl, setErrorUrl] = useState<string | null>(null)
   const [debugInfo, setDebugInfo] = useState<string[]>([])
 
   useEffect(() => {
@@ -154,6 +156,7 @@ export default function ShareTarget() {
         
       } catch (err) {
         console.error('Erro ao processar compartilhamento:', err)
+        setErrorUrl(cleanUrl ?? null)
         setError('Erro ao processar o artigo: ' + (err as Error).message)
       }
     }
@@ -161,7 +164,23 @@ export default function ShareTarget() {
     processSharedUrl()
   }, [])
 
-  // Sempre mostrar a interface de debug, mesmo com erro
+  if (error) {
+    return (
+      <BlockedErrorView
+        message={
+          errorUrl
+            ? 'Parece que este site bloqueou o Postr. 🥺'
+            : 'Não encontramos uma URL para processar nos dados compartilhados.'
+        }
+        subMessage={
+          errorUrl
+            ? 'Tente acessar o artigo clicando no link original.'
+            : undefined
+        }
+        url={errorUrl ?? undefined}
+      />
+    )
+  }
 
   return (
     <div className="min-h-screen bg-brand-900 text-white p-4 overflow-x-hidden">
@@ -172,7 +191,7 @@ export default function ShareTarget() {
         <div className="bg-brand-800 p-4 rounded-lg mb-4">
           <h2 className="text-lg font-semibold mb-2">Status:</h2>
           <div className="flex items-center gap-2">
-            {!error && <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>}
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
             <p className="text-gray-300">{status}</p>
           </div>
         </div>
@@ -190,22 +209,7 @@ export default function ShareTarget() {
             </div>
           </div>
         )}
-
-        {/* Error */}
-        {error && (
-          <div className="bg-red-800 p-4 rounded-lg mb-4">
-            <h2 className="text-lg font-semibold mb-2 text-red-400">Erro:</h2>
-            <p className="text-gray-300">{error}</p>
-            <button 
-              onClick={() => location.replace('/')}
-              className="mt-3 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
-            >
-              Voltar ao início
-            </button>
-          </div>
-        )}
       </div>
-
     </div>
   )
 }

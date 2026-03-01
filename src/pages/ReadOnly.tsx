@@ -5,6 +5,7 @@ import { parseArticleFromUrl } from "@/lib/parser";
 import IconButton from "@/components/IconButton";
 import Button from "@/components/Button";
 import InstallPrompt from "@/components/InstallPrompt";
+import BlockedErrorView from "@/components/BlockedErrorView";
 
 interface ParsedArticle {
     url: string;
@@ -99,12 +100,19 @@ export default function ReadOnly() {
 
     if (error || !article) {
         return (
-            <div className="min-h-screen flex flex-col items-center justify-center gap-4 px-4">
-                <p className="text-red-500">{error || "Artigo não encontrado"}</p>
-                <Link to="/" className="text-primary hover:underline">
-                    Voltar ao início
-                </Link>
-            </div>
+            <BlockedErrorView
+                message={
+                    urlParam
+                        ? "Parece que este site bloqueou o Postr. 🥺"
+                        : "Nenhuma URL fornecida."
+                }
+                subMessage={
+                    urlParam
+                        ? "Tente acessar o artigo clicando no link original."
+                        : undefined
+                }
+                url={urlParam ?? undefined}
+            />
         );
     }
 
