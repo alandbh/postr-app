@@ -29,3 +29,7 @@
   AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json application/manifest+json
 </IfModule>
 
+# Desativa Mod_Security para permitir Share Target (GET com query params longos)
+<IfModule mod_security2.c>
+  SecRuleEngine Off
+</IfModule>
