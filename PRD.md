@@ -8,7 +8,7 @@ Fase do produto: Transição de POC para produto
 
 Postr é um leitor de artigos sem distrações que permite salvar links da web, extrair o conteúdo principal e oferecer uma experiência de leitura limpa, focada e privada. Hoje o projeto existe como uma POC funcional com frontend PWA, armazenamento local e um parser baseado em Cloudflare Worker. O objetivo desta nova fase é transformar essa base em um produto real, com definição clara de proposta de valor, escopo, qualidade mínima e critérios de evolução.
 
-Este documento define a direção de produto. Os detalhes de cada entrega deverão ser registrados em `specs/<id>-<feature>/spec.md`.
+Este documento define a direção de produto como um todo. Os detalhes de cada entrega deverão ser registrados em arquivos de especificações separados.
 
 ## 2. Visão
 
