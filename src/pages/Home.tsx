@@ -3,112 +3,52 @@ import { useNavigate } from "react-router-dom";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import BlockedErrorView from "@/components/BlockedErrorView";
-import { db } from "@/db/schema";
-import { parseArticleFromUrl } from "@/lib/parser";
-
-// Domínios de serviços intermediários de compartilhamento (não são o artigo real)
-const SHARE_SERVICE_DOMAINS = [
-  "share.google",
-  "search.app",
-  "t.co",
-  "bit.ly",
-  "goo.gl",
-  "tinyurl.com",
-  "ow.ly",
-];
-
-// Função para extrair URL de texto compartilhado.
-// Quando há múltiplas URLs, prioriza a que NÃO é de um serviço de share.
-function extractUrlFromText(text: string): string | null {
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
-  const matches = text.match(urlRegex);
-
-  if (!matches || matches.length === 0) return null;
-  if (matches.length === 1) return matches[0];
-
-  // Preferir URLs que não sejam de serviços intermediários
-  const realUrl = matches.find((u) => {
-    try {
-      const host = new URL(u).hostname.replace(/^www\./, "");
-      return !SHARE_SERVICE_DOMAINS.some(
-        (d) => host === d || host.endsWith("." + d),
-      );
-    } catch {
-      return false;
-    }
-  });
-
-  return realUrl || matches[0];
-}
+import { saveArticleFromUrl, type SaveFailureReason } from "@/services/articles";
 
 export default function Home() {
   const navigate = useNavigate();
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<{ url: string } | null>(null);
+  const [error, setError] = useState<{ reason: SaveFailureReason; url?: string } | null>(null);
 
   async function onSave() {
     if (!url) return;
     setLoading(true);
     setError(null);
-    let cleanUrl = url.trim();
-    try {
-      // Se não começa com http, tentar extrair URL do texto
-      if (!cleanUrl.startsWith("http")) {
-        const extractedUrl = extractUrlFromText(cleanUrl);
-        if (extractedUrl) {
-          cleanUrl = extractedUrl;
-          // Atualizar o campo com a URL limpa
-          setUrl(cleanUrl);
-        } else {
-          setLoading(false);
-          setError({ url: "" });
-          return;
-        }
-      }
-
-      const id = crypto.randomUUID();
-      const parsed = await parseArticleFromUrl(cleanUrl);
-      await db.articles.add({
-        id,
-        url: cleanUrl,
-        title: parsed.title,
-        content: parsed.content,
-        excerpt: parsed.excerpt,
-        author: parsed.author,
-        image: parsed.image,
-        tags: [],
-        savedAt: Date.now(),
+    const result = await saveArticleFromUrl(url);
+    setLoading(false);
+    if (result.ok) {
+      navigate(`/reader/${result.id}`, {
+        state: { newArticle: !result.alreadyExisted, alreadyExisted: result.alreadyExisted },
       });
-      navigate(`/reader/${id}`, { state: { newArticle: true } });
-    } catch (err) {
-      setError({ url: cleanUrl });
-    } finally {
-      setLoading(false);
+      return;
     }
+    setError({ reason: result.reason, url: result.url });
   }
 
   if (error) {
+    const isNoUrl = error.reason === "no-url";
     return (
       <BlockedErrorView
         message={
-          error.url
-            ? "Parece que este site bloqueou o Postr. 🥺"
-            : "Nenhuma URL válida encontrada no texto colado."
+          isNoUrl
+            ? "Nenhuma URL válida encontrada no texto colado."
+            : error.reason === "blocked"
+              ? "Parece que este site bloqueou o Postr. 🥺"
+              : "Não foi possível salvar este artigo agora."
         }
         subMessage={
-          error.url
+          error.url && !isNoUrl
             ? "Tente acessar o artigo clicando no link original."
             : undefined
         }
-        url={error.url || undefined}
+        url={error.url}
       />
     );
   }
 
   return (
     <div className="min-h-screen bg-surface text-on-surface font-sans">
-      {/* Hero central */}
       <main className="mx-auto max-w-3xl px-6 pt-6 pb-16 text-center mt-10">
         <div className="flex flex-col items-center justify-center gap-5">
           <img
@@ -126,8 +66,7 @@ export default function Home() {
             </a>
           </p>
         </div>
-        {/* Campo + botão */}
-        <div className="mt-16 flex flex-col  gap-3">
+        <div className="mt-16 flex flex-col gap-3">
           <div className="w-full max-w-2xl flex items-center gap-3 flex-col">
             <Input
               placeholder="https://"
@@ -137,14 +76,6 @@ export default function Home() {
               className="h-12 rounded-full border-2 border-primary/30 focus:border-primary flex-1"
               aria-label="Cole a URL do artigo aqui"
             />
-            {/* <Button
-            onClick={onSave}
-            disabled={!url}
-            isLoading={loading}
-            className="h-12 px-12 py-3 w-full md:w-auto flex-1 rounded-full bg-primary text-on-primary-contrast hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-primary-fixed"
-          >
-            Salvar
-          </Button> */}
             <Button onClick={onSave} disabled={!url} isLoading={loading}>
               Salvar
             </Button>
