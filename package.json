@@ -8,7 +8,10 @@
     "build": "vite build",
     "build:cpanel": "vite build --outDir dist-cpanel && cp public/.htaccess-dist dist-cpanel/.htaccess",
     "build:cpanel-zip": "vite build && cp public/.htaccess dist/.htaccess && zip -r postr-cpanel.zip dist/",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",
@@ -23,10 +26,12 @@
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
+    "fake-indexeddb": "^6.2.5",
     "postcss": "^8.4.41",
     "tailwindcss": "^3.4.10",
     "typescript": "^5.5.4",
     "vite": "^5.4.3",
-    "vite-plugin-pwa": "^0.20.5"
+    "vite-plugin-pwa": "^0.20.5",
+    "vitest": "^3.2.7"
   }
 }
