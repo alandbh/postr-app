@@ -2,7 +2,8 @@
 
 Status: Draft v0.1
 Última atualização: 2026-04-04
-Documento complementar a: `PRD.md`
+Documento complementar a: [docs/product/PRD.md](../product/PRD.md)
+Processo de engenharia: [docs/superpowers/README.md](../superpowers/README.md) e [AGENTS.md](../../AGENTS.md)
 
 ## 1. Objetivo
 
@@ -109,11 +110,17 @@ Em termos práticos, a base já prova valor. O problema agora não é mais "a id
 
 ### 4.4 Documentação atual
 
-- `PRD.md`
+- [docs/product/PRD.md](../product/PRD.md)
   Fonte de verdade para direção de produto.
 
-- `README.md`
-  Hoje está parcialmente desatualizado e precisa ser revisado.
+- [docs/operations/deploy.md](../operations/deploy.md)
+  Procedimento de deploy consolidado (CI/CD via FTP + fallback manual).
+
+- [docs/superpowers/README.md](../superpowers/README.md)
+  Processo SDD/Superpowers, templates de specs e planos.
+
+- [README.md](../../README.md)
+  Visão geral e quickstart do repositório.
 
 ## 5. Fluxos principais
 
@@ -312,34 +319,39 @@ Além das specs de produto, faz sentido ter specs com recorte técnico quando o 
 
 ### 10.1 Ordem sugerida
 
-1. `specs/001-salvar-artigo/spec.md`
+Cada spec é um design doc datado em `docs/superpowers/specs/` (ver [processo](../superpowers/README.md)). Stubs já criados:
+
+1. [salvar-artigo](../superpowers/specs/2026-07-11-salvar-artigo-design.md)
    Fluxo principal de captura e persistência.
 
-2. `specs/002-parser-contract/spec.md`
+2. [parser-contract](../superpowers/specs/2026-07-11-parser-contract-design.md)
    Contrato do parser, categorias de erro e resposta esperada.
 
-3. `specs/003-share-target-pwa/spec.md`
+3. [share-target-pwa](../superpowers/specs/2026-07-11-share-target-pwa-design.md)
    Fluxo de compartilhamento mobile e comportamento por ambiente.
 
-4. `specs/004-biblioteca-e-tags/spec.md`
+4. [biblioteca-e-tags](../superpowers/specs/2026-07-11-biblioteca-e-tags-design.md)
    Busca, filtros e gestão de tags.
 
-5. `specs/005-seguranca-html-extraido/spec.md`
+5. [seguranca-html-extraido](../superpowers/specs/2026-07-11-seguranca-html-extraido-design.md)
    Política para renderização segura do conteúdo extraído.
 
 ## 11. Proposta de organização futura do repositório
 
-Estrutura sugerida:
+A camada de documentação já foi reorganizada nesta convenção:
 
-- `PRD.md`
-- `ARQUITETURA-E-BACKLOG-TECNICO.md`
-- `specs/`
-- `docs/operations/`
-- `docs/decisions/`
-- `src/services/`
-- `src/features/` ou `src/use-cases/`
+- `docs/product/PRD.md`
+- `docs/engineering/architecture-and-backlog.md` (este documento)
+- `docs/operations/deploy.md`
+- `docs/decisions/` (ADRs)
+- `docs/superpowers/specs/` e `docs/superpowers/plans/`
 
-Isto não precisa acontecer de uma vez. O importante é começar a mover o projeto para um layout onde produto, decisão e implementação tenham fronteiras mais claras.
+O layout de código ainda deve evoluir na mesma direção (fronteiras mais claras entre produto, decisão e implementação):
+
+- `src/services/` ou `src/use-cases/` para casos de uso explícitos (ver Refatoração 1)
+- `src/features/` para agrupar UI por fatia de produto
+
+Isto não precisa acontecer de uma vez, mas as fronteiras de código devem seguir as fronteiras de documentação já estabelecidas.
 
 ## 12. Recomendações operacionais imediatas
 
@@ -369,13 +381,13 @@ Considerar a base pronta para a próxima fase quando:
 
 ## 14. Relação entre documentos
 
-- `PRD.md`
+- [docs/product/PRD.md](../product/PRD.md)
   Define por que o produto existe, para quem e qual escopo faz sentido.
 
-- `ARQUITETURA-E-BACKLOG-TECNICO.md`
+- [docs/engineering/architecture-and-backlog.md](architecture-and-backlog.md)
   Define como o sistema está hoje e o que precisa ser estabilizado.
 
-- `specs/*/spec.md`
+- `docs/superpowers/specs/*-design.md`
   Definem entregas concretas, critérios de aceitação e decisões por fatia.
 
 Esse trio deve virar a espinha dorsal do processo SDD no projeto.

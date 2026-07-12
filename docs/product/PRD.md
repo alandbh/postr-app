@@ -8,7 +8,9 @@ Fase do produto: Transição de POC para produto
 
 Postr é um leitor de artigos sem distrações que permite salvar links da web, extrair o conteúdo principal e oferecer uma experiência de leitura limpa, focada e privada. Hoje o projeto existe como uma POC funcional com frontend PWA, armazenamento local e um parser baseado em Cloudflare Worker. O objetivo desta nova fase é transformar essa base em um produto real, com definição clara de proposta de valor, escopo, qualidade mínima e critérios de evolução.
 
-Este documento define a direção de produto como um todo. Os detalhes de cada entrega deverão ser registrados em arquivos de especificações separados.
+Este documento define a direção de produto como um todo. Os detalhes de cada entrega deverão ser registrados em design docs separados, seguindo o processo SDD/Superpowers descrito em [docs/superpowers/README.md](../superpowers/README.md).
+
+> Localização: este é o documento-mestre de produto. Documentação técnica em [docs/engineering/architecture-and-backlog.md](../engineering/architecture-and-backlog.md); operações em [docs/operations/deploy.md](../operations/deploy.md); decisões em [docs/decisions/](../decisions/README.md).
 
 ## 2. Visão
 
@@ -265,12 +267,15 @@ Recebe, pela primeira vez, um artigo compartilhado por outro usuário Postr. Est
 
 ## 21. Backlog de specs sugeridas
 
-- `specs/001-salvar-artigo/spec.md`
-- `specs/002-leitura-limpa/spec.md`
-- `specs/003-biblioteca-e-tags/spec.md`
-- `specs/004-share-target-pwa/spec.md`
-- `specs/005-parser-service/spec.md`
-- `specs/006-compartilhar-artigo/spec.md`
+Cada spec vira um design doc datado em `docs/superpowers/specs/YYYY-MM-DD-<topico>-design.md`, produzido pelo processo de brainstorming (ver [docs/superpowers/README.md](../superpowers/README.md)). Stubs já criados:
+
+- [salvar-artigo](../superpowers/specs/2026-07-11-salvar-artigo-design.md)
+- [leitura-limpa](../superpowers/specs/2026-07-11-leitura-limpa-design.md)
+- [biblioteca-e-tags](../superpowers/specs/2026-07-11-biblioteca-e-tags-design.md)
+- [share-target-pwa](../superpowers/specs/2026-07-11-share-target-pwa-design.md)
+- [parser-contract](../superpowers/specs/2026-07-11-parser-contract-design.md)
+- [compartilhar-artigo](../superpowers/specs/2026-07-11-compartilhar-artigo-design.md)
+- [seguranca-html-extraido](../superpowers/specs/2026-07-11-seguranca-html-extraido-design.md)
 
 ## 22. Questões em aberto
 
@@ -282,8 +287,11 @@ Recebe, pela primeira vez, um artigo compartilhado por outro usuário Postr. Est
 
 ## 23. Processo SDD proposto para este projeto
 
+O processo detalhado (skills Superpowers, templates e Definition of Done) vive em [docs/superpowers/README.md](../superpowers/README.md) e em [AGENTS.md](../../AGENTS.md). Em resumo:
+
 1. Manter este `PRD.md` como documento-mestre de produto.
-2. Criar um `spec.md` para cada entrega relevante.
-3. Quebrar cada spec em tarefas implementáveis e testáveis.
-4. Atualizar código, testes e documentação juntos.
-5. Revisar o PRD quando houver mudança de direção, não a cada detalhe de implementação.
+2. Para cada entrega relevante, fazer brainstorming e escrever um design doc em `docs/superpowers/specs/`.
+3. Transformar cada design doc em um plano de implementação em `docs/superpowers/plans/`.
+4. Quebrar cada plano em tarefas implementáveis e testáveis (TDD) e atualizar código, testes e documentação juntos.
+5. Verificar antes de concluir e revisar o resultado (code review) antes de integrar.
+6. Revisar o PRD quando houver mudança de direção, não a cada detalhe de implementação.
